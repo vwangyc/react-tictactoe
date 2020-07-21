@@ -1,6 +1,6 @@
 # React Tutorial - Tic Tac Toe + Add-ons 
 
-![react-tutorial-add-ons](https://github.com/vwangyc/react-tictactoe-add-ons/blob/master/public/react-tutorial-add-ons.PNG)
+![react-tutorial-add-ons](https://github.com/vwangyc/react-tictactoe/blob/master/public/react-tutorial-add-ons.PNG)
 
 https://reactjs.org/tutorial/tutorial.html#wrapping-up
 
