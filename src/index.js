@@ -3,8 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
+  let squareStyle;
+  if (props.showColor) {
+    squareStyle = {backgroundColor: 'pink'};
+  }
+
   return (
-    <button className="square" onClick={props.onClick}>
+    <button style={squareStyle} className="square" onClick={props.onClick}>
       {props.value}
     </button>
   );
@@ -12,10 +17,18 @@ function Square(props) {
 
 class Board extends React.Component {
   renderSquare(i) {
+    let showWinningSquares;
+    const [a, b, c] = this.props.win;
+
+    if (i === a || i === b || i === c) {
+      showWinningSquares = this.props.showColor;
+    }
+
     return (
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        showColor={showWinningSquares}
       />
     );
   }
@@ -92,10 +105,12 @@ class Game extends React.Component {
       const desc = move ?
         'Go to move #' + move :
         'Go to game start';
+
       let fontStyle;
       if (move === this.state.stepNumber) {
         fontStyle = {fontWeight: 'bold'};
       }
+
       return (
         <li key={move}>
           <button style={fontStyle} onClick={() => this.jumpTo(move)}>{desc}</button>
@@ -104,8 +119,13 @@ class Game extends React.Component {
     });
 
     let status;
+    let winningArray = []
+    let showBackgroundColor = false;
+
     if (winner) {
-      status = "Winner: " + winner;
+      status = "Winner: " + winner.player;
+      winningArray = winner.winningLine;
+      showBackgroundColor = true;
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
@@ -116,6 +136,8 @@ class Game extends React.Component {
           <Board
             squares={current.squares}
             onClick={i => this.handleClick(i)}
+            showColor={showBackgroundColor}
+            win={winningArray}
           />
         </div>
         <div className="game-info">
@@ -145,7 +167,8 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      let winningData = {player: squares[a], winningLine: lines[i]};
+      return winningData;
     }
   }
   return null;
