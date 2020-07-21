@@ -19,11 +19,11 @@ class Board extends React.Component {
   renderSquare(i) {
     let showWinningSquares;
     const [a, b, c] = this.props.win;
-
+    
     if (i === a || i === b || i === c) {
       showWinningSquares = this.props.showColor;
     }
-
+    
     return (
       <Square
         value={this.props.squares[i]}
@@ -121,11 +121,14 @@ class Game extends React.Component {
     let status;
     let winningArray = []
     let showBackgroundColor = false;
+    const maxSteps = 9;
 
     if (winner) {
       status = "Winner: " + winner.player;
       winningArray = winner.winningLine;
       showBackgroundColor = true;
+    } else if (this.state.stepNumber === maxSteps) {
+
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
